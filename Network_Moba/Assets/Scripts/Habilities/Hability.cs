@@ -10,6 +10,7 @@ public abstract class Hability : ScriptableObject
     public float wide;
     public float coolDown;
     public bool canCast = true;
+    protected Transform castBarPosition;
     public abstract void Cast(Player taumaturgo);
     public abstract void HabilityReady();
     public async virtual void Cooldown(){

@@ -42,6 +42,7 @@ public abstract class Player : MonoBehaviour
             onMovementSpeedChanged = null;
         }
         lastFrameSpeed = movementSpeed;
+        
         if(lastframeHealth != health){
             if(onHealthChanged != null) onHealthChanged(health);
             onHealthChanged=null;
