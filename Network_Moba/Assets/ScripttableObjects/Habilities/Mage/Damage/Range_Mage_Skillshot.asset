@@ -15,5 +15,6 @@ MonoBehaviour:
   range: 5
   damage: 50
   wide: 20
-  coolDown: 5
+  coolDown: 2
   canCast: 1
+  prefab: {fileID: 6132144631279722834, guid: 8a6f5e108bb67a64db2acdef06a6ceb5, type: 3}

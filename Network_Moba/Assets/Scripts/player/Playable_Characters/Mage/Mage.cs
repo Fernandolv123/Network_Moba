@@ -10,10 +10,6 @@ public class Mage : Player
     {
         throw new System.NotImplementedException();
     }
-    public override void Move()
-    {
-        throw new System.NotImplementedException();
-    }
     // Start is called before the first frame update
     protected override void Start()
     {
