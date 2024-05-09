@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2946613789a0d1d4dba3b3a457e15e92, type: 3}
-  m_Name: Mage_Movility_Skillshot
+  m_Script: {fileID: 11500000, guid: 9ebbddabdb9fa3d4288be40b7f49c4cd, type: 3}
+  m_Name: Mage_Blink
   m_EditorClassIdentifier: 
-  range: 3
+  range: 1
   damage: 0
   wide: 0
-  coolDown: 2
+  coolDown: 3
   canCast: 1

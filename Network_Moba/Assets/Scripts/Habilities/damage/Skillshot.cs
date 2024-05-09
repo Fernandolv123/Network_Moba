@@ -67,7 +67,7 @@ public class Skillshot : Hability
                 Vector3 goHabilityStartPosition = goHability.transform.position;
                 while(arrivalTime < 1){
                     Debug.Log("Entra " + Vector3.Lerp(goHability.transform.position,hit.point,0.5f));
-                    arrivalTime +=0.005f*(scaleX <= 1 ? 1 : scaleX);
+                    arrivalTime +=0.05f/(scaleX <= 1 ? 1 : scaleX);
                     goHability.transform.position = Vector3.Lerp(goHabilityStartPosition,hit.point,arrivalTime);
                     //goHability.transform.position = (hit.point - goHability.transform.position) * arrivalTime + goHability.transform.position;
                     await Task.Delay(10);
