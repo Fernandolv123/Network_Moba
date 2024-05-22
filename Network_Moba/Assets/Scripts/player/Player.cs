@@ -5,6 +5,9 @@ using UnityEngine.AI;
 
 public abstract class Player : MonoBehaviour
 {
+    private bool isPlayer;
+    private bool isAlly;
+    private bool isEnemy;
     [Header("Everything needed for base Characters")]
     public Skillshot PrimaryDamagableHability;
     public Hability PrimaryMovilityHability;
@@ -78,7 +81,7 @@ public abstract class Player : MonoBehaviour
         }
     }
 
-    private void SimulatedOnTriggerEnter(){
+    public void SimulatedOnTriggerEnter(){
         health -= 5;
         onHealthChanged += UpdateHealthOnServerRPC;
         if(health <= 0){
@@ -104,6 +107,15 @@ public abstract class Player : MonoBehaviour
         yield return new WaitForSeconds(coolDown);
         skill.HabilityReady();
         skill.canCast=true;
+    }
+    public bool IsAlly(){
+        return isAlly;
+    }
+    public bool IsEnemy(){
+        return isEnemy;
+    }
+    public bool IsPlayer(){
+        return isPlayer;
     }
 
 }

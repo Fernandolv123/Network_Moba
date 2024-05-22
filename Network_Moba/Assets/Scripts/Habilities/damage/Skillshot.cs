@@ -15,7 +15,7 @@ public class Skillshot : Hability
     private float scaleX;
     private float scaleY;
     private float scaleZ;
-    public override void Cast(Player taumaturgo){
+    public override void Cast(Player caster){
         if (castBarPosition == null) castBarPosition = GameObject.FindWithTag("CastBarPosition").GetComponent<Transform>();
         chargingBar = Instantiate(chargingBarPrefab,castBarPosition.position,Quaternion.identity).GetComponent<Scrollbar>();
         chargingBar.transform.parent = castBarPosition.transform;
@@ -23,8 +23,9 @@ public class Skillshot : Hability
         scaleX = 0;
         scaleY = 0;
         scaleZ = 0;
-        goHability = Instantiate(prefab,taumaturgo.transform.position + Vector3.up*2,Quaternion.identity);
-        goHability.transform.parent = taumaturgo.transform;
+        goHability = Instantiate(prefab,caster.transform.position + Vector3.up*2,Quaternion.identity);
+        goHability.transform.parent = caster.transform;
+        goHability.GetComponent<BaseDamageController>().SetDamage(caster.baseDamage); 
         charging=true;
         Charge();
     }
@@ -41,6 +42,7 @@ public class Skillshot : Hability
                 scaleX = Mathf.Clamp(scaleX,-3,3);
                 scaleY = Mathf.Clamp(scaleY,-3,3);
                 scaleZ = Mathf.Clamp(scaleZ,-3,3);
+                //goHability.transform.localScale = Vector3.Lerp(goHability.transform.localScale,new Vector3(goHability.transform.localScale.x+3,goHability.transform.localScale.y+3,goHability.transform.localScale.z+3),timer/2.5f);
                 goHability.transform.localScale = new Vector3(scaleX,scaleY,scaleZ);
             }
             if(!Input.GetKey(KeyCode.Q)){
@@ -52,7 +54,10 @@ public class Skillshot : Hability
             chargingBar.value = timer/2.5f;
             await Task.Delay(100);
         }
-        chargingBar.value = 1;
+        if (chargingBar.value >=1){
+            Destroy(goHability,1f);
+        }
+        Debug.Log(chargingBar.value);
         charging=false;
         Destroy(chargingBar.gameObject,0.2f);
         Cooldown();
@@ -66,7 +71,7 @@ public class Skillshot : Hability
                 float arrivalTime=0;
                 Vector3 goHabilityStartPosition = goHability.transform.position;
                 while(arrivalTime < 1){
-                    Debug.Log("Entra " + Vector3.Lerp(goHability.transform.position,hit.point,0.5f));
+                    //Debug.Log("Entra " + Vector3.Lerp(goHability.transform.position,hit.point,0.5f));
                     arrivalTime +=0.05f/(scaleX <= 1 ? 1 : scaleX);
                     goHability.transform.position = Vector3.Lerp(goHabilityStartPosition,hit.point,arrivalTime);
                     //goHability.transform.position = (hit.point - goHability.transform.position) * arrivalTime + goHability.transform.position;
