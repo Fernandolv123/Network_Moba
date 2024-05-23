@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
 public class Mage : Player
@@ -13,6 +14,7 @@ public class Mage : Player
     // Start is called before the first frame update
     protected override void Start()
     {
+        if (!isLocalPlayer) return;
         health -= magePasive;
         baseDamage += magePasive;
         base.Start();
@@ -29,6 +31,7 @@ public class Mage : Player
         Debug.Log("Has muerto");
     }
     public override void UpdateHealthOnServerRPC(float health){
-        Debug.Log("Vida Cambiada");
+        Debug.Log("Vida Cambiada en servidor");
+        transform.position = Vector3.zero;
     }
 }

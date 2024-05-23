@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 using UnityEngine.AI;
 
-public abstract class Player : MonoBehaviour
+public abstract class Player : NetworkBehaviour
 {
     private bool isPlayer;
     private bool isAlly;
@@ -12,6 +13,7 @@ public abstract class Player : MonoBehaviour
     public Skillshot PrimaryDamagableHability;
     public Hability PrimaryMovilityHability;
     public Hability PrimaryUltimateHability;
+    [SyncVar]
     public float health;
     private float lastframeHealth;
     public float armor;
@@ -39,6 +41,7 @@ public abstract class Player : MonoBehaviour
     }
     protected virtual void Update()
     {
+        if (!isLocalPlayer) return;
         if(lastFrameSpeed != movementSpeed){
             onMovementSpeedChanged += UpdateSpeed;
             if(onMovementSpeedChanged != null) onMovementSpeedChanged(movementSpeed);
@@ -73,19 +76,15 @@ public abstract class Player : MonoBehaviour
             }
         }
     }
-    private void OnTriggerEnter(Collider other){
-        float healthnow=-2;
-        onHealthChanged += UpdateHealthOnServerRPC;
-        if(healthnow < 0){
-            onHealthChanged += Die;
-        }
-    }
 
+    [Command]
     public void SimulatedOnTriggerEnter(){
         health -= 5;
         onHealthChanged += UpdateHealthOnServerRPC;
+            //UpdateHealthOnServerRPC(health);
         if(health <= 0){
             onHealthChanged += Die;
+                //Die(health);
         }
     }
     private void UpdateSpeed(float speed){

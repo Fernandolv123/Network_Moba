@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Mirror;
 using UnityEngine;
 
 public abstract class Hability : ScriptableObject

@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(menuName = "Habilities/damage")]
 public class Skillshot : Hability
 {
+    //Referencias
+    //https://bronsonzgeb.com/index.php/2021/09/25/the-command-pattern-with-scriptable-objects/
+    //https://www.youtube.com/watch?v=tdyP1vTrQfY
     public GameObject prefab;
     private GameObject goHability;
     private bool charging=false;
@@ -15,6 +19,7 @@ public class Skillshot : Hability
     private float scaleX;
     private float scaleY;
     private float scaleZ;
+    [TargetRpc]
     public override void Cast(Player caster){
         if (castBarPosition == null) castBarPosition = GameObject.FindWithTag("CastBarPosition").GetComponent<Transform>();
         chargingBar = Instantiate(chargingBarPrefab,castBarPosition.position,Quaternion.identity).GetComponent<Scrollbar>();
@@ -29,6 +34,7 @@ public class Skillshot : Hability
         charging=true;
         Charge();
     }
+    [TargetRpc]
     public async void Charge(){
         float timer =0;
         while(charging && timer < 2.5){
@@ -63,6 +69,7 @@ public class Skillshot : Hability
         Cooldown();
         //Destroy(goHability,5f);
     }
+    [TargetRpc]
     public async void CastChargedHability(){
         RaycastHit hit;
         if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)){
@@ -81,6 +88,7 @@ public class Skillshot : Hability
                 Destroy(goHability,2f);
         }
     }
+    [Command]
     public override void HabilityReady(){
         Debug.Log("Q hability Ready");
         canCast=true;
