@@ -30,6 +30,7 @@ public class Mage : Player
     {
         Debug.Log("Has muerto");
     }
+    [TargetRpc]
     public override void UpdateHealthOnServerRPC(float health){
         Debug.Log("Vida Cambiada en servidor");
         transform.position = Vector3.zero;

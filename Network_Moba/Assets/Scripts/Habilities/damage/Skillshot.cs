@@ -11,6 +11,8 @@ public class Skillshot : Hability
     //Referencias
     //https://bronsonzgeb.com/index.php/2021/09/25/the-command-pattern-with-scriptable-objects/
     //https://www.youtube.com/watch?v=tdyP1vTrQfY
+    
+    //https://mirror-networking.gitbook.io/docs/manual/guides/authority
     public GameObject prefab;
     private GameObject goHability;
     private bool charging=false;
@@ -19,7 +21,7 @@ public class Skillshot : Hability
     private float scaleX;
     private float scaleY;
     private float scaleZ;
-    [TargetRpc]
+    [Command]
     public override void Cast(Player caster){
         if (castBarPosition == null) castBarPosition = GameObject.FindWithTag("CastBarPosition").GetComponent<Transform>();
         chargingBar = Instantiate(chargingBarPrefab,castBarPosition.position,Quaternion.identity).GetComponent<Scrollbar>();
@@ -28,13 +30,18 @@ public class Skillshot : Hability
         scaleX = 0;
         scaleY = 0;
         scaleZ = 0;
+        //goHability = GameObject.FindWithTag("Finish");
         goHability = Instantiate(prefab,caster.transform.position + Vector3.up*2,Quaternion.identity);
         goHability.transform.parent = caster.transform;
         goHability.GetComponent<BaseDamageController>().SetDamage(caster.baseDamage); 
+        NetworkServer.Spawn(goHability,NetworkClient.connection);
+        //NetworkIdentity identity =caster.gameObject.GetComponent<NetworkIdentity>();
+        //Debug.Log("Encontrado: " + identity);
+        //Debug.Log("ConectionToClient: " + identity.connectionToClient);
         charging=true;
         Charge();
     }
-    [TargetRpc]
+    [Command]
     public async void Charge(){
         float timer =0;
         while(charging && timer < 2.5){
@@ -69,7 +76,7 @@ public class Skillshot : Hability
         Cooldown();
         //Destroy(goHability,5f);
     }
-    [TargetRpc]
+    [Command]
     public async void CastChargedHability(){
         RaycastHit hit;
         if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)){

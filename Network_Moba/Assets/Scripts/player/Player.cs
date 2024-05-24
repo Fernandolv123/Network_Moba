@@ -34,6 +34,9 @@ public abstract class Player : NetworkBehaviour
     protected virtual void Awake(){
         agent = GetComponent<NavMeshAgent>();
         agent.speed = movementSpeed;
+        NetworkIdentity identity =this.gameObject.GetComponent<NetworkIdentity>();
+        Debug.Log("Encontrado: " + identity);
+        Debug.Log("ConectionToClient: " + identity.connectionToClient);
     }
     protected virtual void Start(){
         lastFrameSpeed = movementSpeed;
@@ -42,6 +45,11 @@ public abstract class Player : NetworkBehaviour
     protected virtual void Update()
     {
         if (!isLocalPlayer) return;
+                NetworkIdentity identity =this.gameObject.GetComponent<NetworkIdentity>();
+        Debug.Log("Encontrado: " + identity);
+        Debug.Log("ConectionToClient: " + identity.connectionToClient + " connection to server: " + connectionToClient);
+        Debug.Log("NetworkClient: " + NetworkClient.connection);
+        Debug.Log("NetworkServer: "+NetworkServer.active);
         if(lastFrameSpeed != movementSpeed){
             onMovementSpeedChanged += UpdateSpeed;
             if(onMovementSpeedChanged != null) onMovementSpeedChanged(movementSpeed);
@@ -90,7 +98,6 @@ public abstract class Player : NetworkBehaviour
     private void UpdateSpeed(float speed){
         agent.speed = speed;
     }
-
     private void CastOnServerRPC(Hability habilityToCast){
         if(habilityToCast.canCast){
             habilityToCast.Cast(this);
@@ -117,4 +124,7 @@ public abstract class Player : NetworkBehaviour
         return isPlayer;
     }
 
+    public override void OnStartLocalPlayer(){
+        Debug.Log("he entrado");
+    }
 }
