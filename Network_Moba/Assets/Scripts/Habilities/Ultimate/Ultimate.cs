@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Habilities/Ultimates")]
 public class Ultimate : Hability
 {
-    public override void Cast(Player taumaturgo)
+    public override void Cast(Transform newPosition, float damageMultiplier)
     {
         Debug.Log("Casted R hability");
         Cooldown();

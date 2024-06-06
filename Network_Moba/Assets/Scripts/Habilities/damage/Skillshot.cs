@@ -21,8 +21,9 @@ public class Skillshot : Hability
     private float scaleX;
     private float scaleY;
     private float scaleZ;
-    [Command]
-    public override void Cast(Player caster){
+
+    [Server] public override void Cast(Transform playerPosition, float damageMultiplier){
+        
         if (castBarPosition == null) castBarPosition = GameObject.FindWithTag("CastBarPosition").GetComponent<Transform>();
         chargingBar = Instantiate(chargingBarPrefab,castBarPosition.position,Quaternion.identity).GetComponent<Scrollbar>();
         chargingBar.transform.parent = castBarPosition.transform;
@@ -31,10 +32,10 @@ public class Skillshot : Hability
         scaleY = 0;
         scaleZ = 0;
         //goHability = GameObject.FindWithTag("Finish");
-        goHability = Instantiate(prefab,caster.transform.position + Vector3.up*2,Quaternion.identity);
-        goHability.transform.parent = caster.transform;
-        goHability.GetComponent<BaseDamageController>().SetDamage(caster.baseDamage); 
-        NetworkServer.Spawn(goHability,NetworkClient.connection);
+        goHability = Instantiate(prefab,playerPosition.position + Vector3.up*2,Quaternion.identity);
+        goHability.transform.parent = playerPosition.transform;
+        goHability.GetComponent<BaseDamageController>().SetDamage(damageMultiplier); 
+        NetworkServer.Spawn(goHability);
         //NetworkIdentity identity =caster.gameObject.GetComponent<NetworkIdentity>();
         //Debug.Log("Encontrado: " + identity);
         //Debug.Log("ConectionToClient: " + identity.connectionToClient);
@@ -99,5 +100,9 @@ public class Skillshot : Hability
     public override void HabilityReady(){
         Debug.Log("Q hability Ready");
         canCast=true;
+    }
+    [Command]
+    public void RegisterHability(){
+        NetworkClient.RegisterPrefab(prefab);
     }
 }

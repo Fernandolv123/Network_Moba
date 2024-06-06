@@ -16,6 +16,6 @@ MonoBehaviour:
   damage: 50
   wide: 20
   coolDown: 2
-  canCast: 0
+  canCast: 1
   prefab: {fileID: 6132144631279722834, guid: 8a6f5e108bb67a64db2acdef06a6ceb5, type: 3}
   chargingBarPrefab: {fileID: 4902924714003653895, guid: a906c46446c097f4c8103ff3d35a00a6, type: 3}

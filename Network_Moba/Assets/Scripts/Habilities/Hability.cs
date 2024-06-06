@@ -12,7 +12,7 @@ public abstract class Hability : ScriptableObject
     public float coolDown;
     public bool canCast = true;
     protected Transform castBarPosition;
-    public abstract void Cast(Player taumaturgo);
+    [Command] public abstract void Cast(Transform newPosition, float damageMultiplier);
     public abstract void HabilityReady();
     public async virtual void Cooldown(){
         await Task.Delay((int) coolDown*1000);
